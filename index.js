@@ -1,11 +1,29 @@
-//const result =  Joi.validate(req.body, schema);
+/***** First RESTful API 
+ * git init
+ * git add .
+ * git commit -m "RESTFul API first project"
+ * git remote add origin https://github.com/JoyTech555/express-demo.git
+ * git push origin master
+ * git config --list
+ * git pull origin master
+ */
 
 const express = require('express');
+const logger = require('./logger');
 const Joi = require('joi');
 const app = express();
 
-//Return a pice
+// req.body
 app.use(express.json());
+app.use(express.urlencoded({ extended: true })); // key=value&key=value
+app.use(express.static('public'));
+
+app.use(logger);
+
+app.use(function(req, res, next){
+    console.log('Authenticating...');
+    next();
+});
 
 const courses = [
 { id: 1, name: 'course1'},
@@ -52,8 +70,8 @@ app.get('/api/courses/:id', (req, res) => {
 
 
 app.put('/api/courses/:id', (req,res) =>{
-    const course = courses.find(c => c.id === parseInt(req.params.id));
-    if (!course) return res.status(404).send(' Not found ID');// 404
+    //const course = courses.find(c => c.id === parseInt(req.params.id));
+    //if (!course) return res.status(404).send(' Not found ID');// 404
     //Validate
     const {error} = validateCourse(req.body);
     if(error){
